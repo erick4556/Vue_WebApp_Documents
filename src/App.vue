@@ -8,7 +8,7 @@
       expand-on-hover
       temporary
       absolute
-      mini-variant="miniVariant"
+      :mini-variant="miniVariant"
     >
       <v-list>
         <v-list-item class="px-2">
@@ -29,12 +29,12 @@
 
       <v-list nav dense>
         <div v-for="m in menu" :key="m.nombre">
-          <router-link :to="m.ruta">
+          <router-link :to="m.path">
             <v-list-item link>
               <v-list-item-icon>
-                <v-icon>{{ m.icono }}</v-icon>
+                <v-icon>{{ m.icon }}</v-icon>
               </v-list-item-icon>
-              <v-list-item-title>{{ m.nombre }}</v-list-item-title>
+              <v-list-item-title>{{ m.name }}</v-list-item-title>
             </v-list-item>
           </router-link>
         </div>
@@ -57,14 +57,19 @@ export default {
     return {
       menu: [
         {
-          ruta: "/",
-          nombre: "Inicio",
-          icono: "mdi-folder",
+          path: "/",
+          name: "Inicio",
+          icon: "home",
         },
         {
-          ruta: "/pixa",
-          nombre: "Imágenes",
-          icono: "mdi-folder",
+          path: "/pixa",
+          name: "Imágenes",
+          icon: "image_search",
+        },
+        {
+          path: "/docs",
+          name: "Documentos",
+          icon: "devices_other",
         },
       ],
       showMenu: false,

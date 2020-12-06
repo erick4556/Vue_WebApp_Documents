@@ -31,7 +31,7 @@ const getAll = async () => {
 
   const items = await res.json();
   console.log(items);
-  return items.results;
+  return items;
 };
 
 const insertDoc = async (doc) => {
