@@ -3,15 +3,29 @@
     <v-container>
       <v-row>
         <v-col>
+          <Modal ref="modal" :item="nuevo" />
           <Message />
           <Docs />
+          <v-btn
+            big
+            color="pink"
+            dark
+            absolute
+            bottom
+            right
+            fab
+            @click="showModal"
+          >
+            <v-icon>add</v-icon>
+          </v-btn>
           <v-progress-linear
             :active="loading.state2"
             color="deep-purple accent-4"
             indeterminate
             rounded
             height="6"
-          />
+          >
+          </v-progress-linear>
         </v-col>
       </v-row>
     </v-container>
@@ -21,33 +35,36 @@
 <script>
 import Message from "./Message";
 import Docs from "./Docs";
+import Modal from "./Modal";
 export default {
-  name: "Documents",
+  name: "Documentos",
   components: {
     Message,
     Docs,
+    Modal,
   },
-  dat: () => {
+  data: () => {
     return {
-      new: {
+      nuevo: {
         id: -1,
-        name: "New Document",
+        nombre: "Nuevo Documento",
         expira: "",
         alerta1y: true,
         alerta6m: true,
         alerta3m: true,
         alerta1m: true,
       },
-      items: [],
+      item: [],
     };
   },
   mounted() {
     try {
       // this.$store.commit("showLoading", "Cargando...");
       this.$store.commit("setItems"); //Nombre de la mutación
-    } catch (err) {
-      console.log(err);
-    } /* finally {
+    } catch (error) {
+      console.log(error);
+    }
+    /* finally {
       this.$store.commit("hideLoading");
     } */
   },
@@ -59,8 +76,22 @@ export default {
       return this.$store.state.loading;
     },
   },
+  methods: {
+    showModal() {
+      this.$refs.modal.show(); //Va acceder al modal por la referencia
+      this.nuevo = {
+        id: -1,
+        nombre: "Nuevo Documento",
+        expira: "",
+        alerta1y: true,
+        alerta6m: true,
+        alerta3m: true,
+        alerta1m: true,
+      };
+    },
+  },
 };
 </script>
 
-<style  scoped>
+<style scoped>
 </style>

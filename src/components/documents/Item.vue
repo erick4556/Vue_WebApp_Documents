@@ -1,10 +1,11 @@
 <template>
   <div>
+    <Modal ref="modal" :item="item" />
     <v-list-item ripple>
       <v-btn @click="deleteDocument" text icon color="red lighten-2">
         <v-icon>delete_forever</v-icon>
       </v-btn>
-      <v-btn text icon color="green lighten-2">
+      <v-btn @click="showModal" text icon color="green lighten-2">
         <v-icon>edit</v-icon>
       </v-btn>
       <v-list-item-content>
@@ -30,9 +31,12 @@
 
 <script>
 import moment from "moment";
+import Modal from "./Modal";
 export default {
   name: "Item",
-  components: {},
+  components: {
+    Modal,
+  },
   props: ["item", "items"],
   methods: {
     deleteDocument() {
@@ -62,6 +66,9 @@ export default {
       return this.expired(date)
         ? "Expiró hace " + rs.replace(/-/g, "")
         : "Faltan : " + rs;
+    },
+    showModal() {
+      this.$refs.modal.show(); //Va acceder al modal por la referencia
     },
   },
 };
