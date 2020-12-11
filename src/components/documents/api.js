@@ -6,36 +6,50 @@ const PASSWORD = "12345678";
 const credenciales = { username: USUARIO, password: PASSWORD };
 
 const getToken = async () => {
-  const r = await fetch(TOKEN_URL, {
-    method: "POST",
-    body: JSON.stringify(credenciales),
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  const token = await r.json(); //Para que procese la respuesta en json
-  return token;
+  try {
+    const r = await fetch(TOKEN_URL, {
+      method: "POST",
+      body: JSON.stringify(credenciales),
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const token = await r.json(); //Para que procese la respuesta en json
+    return token;
+  } catch (error) {
+    console.warn(error.message);
+    return error.message;
+  }
 };
 
 const getAll = async () => {
   const token = await getToken();
 
-  const res = await fetch(DOCS_URL, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + token.access,
-    },
-  });
+  if (typeof token === "string") {
+    return token;
+  } else {
+    const res = await fetch(DOCS_URL, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token.access,
+      },
+    });
 
-  const items = await res.json();
-  console.log(items);
-  return items;
+    const items = await res.json();
+    console.log(items);
+    return items;
+  }
 };
 
 const insertDoc = async (doc) => {
   const token = await getToken();
+
+  if (typeof token === "string") {
+    return token;
+  }
+
   const res = await fetch(DOCS_URL, {
     method: "POST",
     body: JSON.stringify(doc),
@@ -44,6 +58,8 @@ const insertDoc = async (doc) => {
       Authorization: "Bearer " + token.access,
     },
   });
+
+  console.log(res);
 
   if (!res.ok) {
     return res.statusText;
@@ -74,8 +90,8 @@ const updateDoc = async (doc) => {
   return item;
 };
 
-const deleteDoc = (id) => {
-  const token = getToken();
+const deleteDoc = async (id) => {
+  const token = await getToken();
   const url = DOCS_URL + id + "/";
 
   fetch(url, {

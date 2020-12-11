@@ -44,6 +44,7 @@ export default {
       try {
         this.$store.commit("showLoading", "Cargando item");
         this.$store.commit("deleteDoc", { id });
+        this.$store.commit("setItems");
       } catch (error) {
         console.error(error);
       } finally {
